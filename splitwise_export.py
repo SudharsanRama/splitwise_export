@@ -149,6 +149,8 @@ def expenses_to_csv(expenses, filepath = None, include_deleted = None, download_
     if download_receipts:
         df.apply(lambda row: download_receipt(row['Receipt'], image_path), axis=1)
 
+    df['Receipt'] = df.apply(lambda row: "=HYPERLINK(\"{}\", \"View Receipt\")".format(row['Receipt'] if row['Receipt'] else ""), axis=1)
+
     if include_deleted:
         df['Deleted'] = df.apply(lambda row: get_user_name(row['Deleted']), axis=1)
     else:
